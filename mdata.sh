@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# mdata.sh      Expose SmartOS metadata to CFEngine
+# https://github.com/bahamat/cfengine-smartos-mdata
+
+# 2014-07-26 Brian Bennett created this
+
+
+declare -A MDATA
+
+
+# All available metadata within the sdc: namespace gets converted into vars.
+VARS="uuid server_uuid datacenter_name alias billing_id brand cpu_shares create_timestamp dns_domain hostname image_uuid last_modified limit_priv max_locked_memory max_lwps max_physical_memory max_swap owner_uuid quota server_uuid state tmpfs uuid zfs_io_priority zonename zonepath"
+
+# A subset will be converted into classes.
+CLASSES="datacenter_name alias brand image_uuid owner_uuid uuid"
+
+
+# The sdc: namespace.
+for key in $VARS
+do
+    VALUE=$(mdata-get sdc:${key} 2>/dev/null)
+    [[ -n $VALUE ]] && MDATA["sdc_${key}"]=${VALUE}
+done
+
+# User defined customer_metadata.
+for key in $(mdata-list)
+do
+    VALUE=$(mdata-get ${key} 2>/dev/null)
+    [[ -n $VALUE ]] && MDATA["${key}"]=${VALUE}
+done
+
+
+for key in "${!MDATA[@]}"
+do
+    v=$(echo "${MDATA[${key}]}" | tr '\n' ';')
+    echo "=mdata.${key/[-.:]/_}=${v%?}"
+done
+for class in $CLASSES
+do
+    [[ -n ${MDATA[sdc_${class}]} ]] && echo "+${MDATA[sdc_${class}]}"
+done
+
+
+exit

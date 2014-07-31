@@ -1,0 +1,49 @@
+body common control
+{
+    bundlesequence => { "mdata_module_install" };
+}
+
+bundle agent mdata_module_install {
+files:
+    install::
+        "$(sys.workdir)/modules/mdata.sh"
+            copy_from => local_cp("$(this.promise_dirname)/mdata.sh");
+    clean::
+        "$(sys.workdir)/modules/mdata.sh"
+            delete => rm;
+methods:
+    test::
+        "run"    usebundle => "run";
+        "report" usebundle => "report";
+}
+
+bundle agent run
+{
+    commands:
+        "mdata.sh"
+            module => "true";
+}
+
+bundle agent report
+{
+    reports:
+        inform_mode::
+            "sdc:uuid => $(mdata.sdc_uuid)";
+            "sdc:server_uuid => $(mdata.sdc_server_uuid)";
+            "sdc:datacenter_name => $(mdata.sdc_datacenter_name)";
+            "sdc:alias => $(mdata.sdc_alias)";
+            "This variable will be undefined => $(mdata.undefined_key)";
+}
+
+
+body copy_from local_cp(from)
+{
+    source => "$(from)";
+}
+
+
+body delete rm
+{
+    dirlinks => "delete";
+    rmdirs => "true";
+}

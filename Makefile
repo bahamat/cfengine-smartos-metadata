@@ -6,7 +6,7 @@ install:
 	@cf-agent -KI -f ./module.cf -D install
 
 test:
-	@./mdata.sh
+	@./mdata
 	@cf-agent -KI -f ./module.cf -D test
 
 clean:

@@ -6,10 +6,10 @@ body common control
 bundle agent mdata_module_install {
 files:
     install::
-        "$(sys.workdir)/modules/mdata.sh"
-            copy_from => local_cp("$(this.promise_dirname)/mdata.sh");
+        "$(sys.workdir)/modules/mdata"
+            copy_from => local_cp("$(this.promise_dirname)/mdata");
     clean::
-        "$(sys.workdir)/modules/mdata.sh"
+        "$(sys.workdir)/modules/mdata"
             delete => rm;
 methods:
     test::
@@ -20,7 +20,7 @@ methods:
 bundle agent run
 {
     commands:
-        "mdata.sh"
+        "$(this.promise_dirname)/mdata"
             module => "true";
 }
 

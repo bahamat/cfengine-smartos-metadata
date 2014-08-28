@@ -34,7 +34,7 @@ done
 for key in "${!MDATA[@]}"
 do
     v=$(echo "${MDATA[${key}]}" | tr '\n' ';')
-    echo "=mdata.${key/[-.:]/_}=${v%?}"
+    echo "=${key/[-.:]/_}=${v%?}"
 done
 for class in $CLASSES
 do

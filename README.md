@@ -17,10 +17,15 @@ Install using `make`. You'll need super user privilege.
 
 ### Usage
 
-Include the following commands promise in one of the inputs.
+Include the following commands promise in one of the inputs (`promises.cf` or
+an autorun bundle).
 
     commands:
-      "$(sys.workdir)/modules/mdata.sh" module => "true";
+      "$(sys.workdir)/modules/mdata" module => "true";
+
+    reports:
+      us_west_1::
+          "My datacenter is $(mdata.sdc_datacenter_name)";
 
 ### Quirks
 

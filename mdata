@@ -13,7 +13,7 @@ declare -A MDATA
 VARS="uuid server_uuid datacenter_name alias billing_id brand cpu_shares create_timestamp dns_domain hostname image_uuid last_modified limit_priv max_locked_memory max_lwps max_physical_memory max_swap owner_uuid quota server_uuid state tmpfs uuid zfs_io_priority zonename zonepath"
 
 # A subset will be converted into classes.
-CLASSES="datacenter_name alias brand image_uuid owner_uuid uuid"
+CLASSES="datacenter_name alias brand image_uuid owner_uuid uuid server_uuid"
 
 
 # The sdc: namespace.
